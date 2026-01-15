@@ -97,6 +97,9 @@ If geometry-conditioned methods fail under whitening, the advantage was statisti
 **Conclusion**
 Variance encodes weak but real importance signals under aggressive pruning, but magnitude-based heuristics already capture most of this signal in ResNet-style architectures.
 
+**Colab Notebook:**  
+https://colab.research.google.com/drive/1fNXQDEUGsMiTTfD06xkbcmREimu_U0df?usp=drive_link
+
 ---
 
 ### Experiment 2 — Spectral-Adaptive LoRA
@@ -120,6 +123,9 @@ Uniform LoRA appears robust to such noise, while geometry-conditioned allocation
 
 **Conclusion**
 Effective-rank-based capacity allocation does not improve parameter-efficient fine-tuning in this setting.
+
+**Colab Notebook:**  
+https://colab.research.google.com/drive/1ufqbYbOocoewMjA--xfvZubykRTm2v5m?usp=sharing
 
 ---
 

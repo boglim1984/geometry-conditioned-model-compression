@@ -71,6 +71,9 @@ The [functional-geometry falsification study](https://github.com/boglim1984/func
 - Re-run pruning with whitened statistics
 - Compare performance degradation
 
+**Colab Notebook:**  
+https://colab.research.google.com/drive/1fNXQDEUGsMiTTfD06xkbcmREimu_U0df?usp=drive_link
+
 ---
 
 ### Phase 2: Spectral-Adaptive LoRA
@@ -93,6 +96,9 @@ The [functional-geometry falsification study](https://github.com/boglim1984/func
 - Apply layer-wise whitening before computing effective rank
 - Re-allocate ranks with whitened statistics
 - Compare performance degradation
+
+**Colab Notebook:**  
+https://colab.research.google.com/drive/1ufqbYbOocoewMjA--xfvZubykRTm2v5m?usp=sharing
 
 ---
 
