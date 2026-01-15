@@ -33,6 +33,9 @@ That study demonstrated:
 
 This repository asks: **Given that geometry is statistical structure, can we still exploit it for compression?**
 
+---
+
+
 ## Experimental Approach
 
 ### Hypotheses
@@ -67,6 +70,95 @@ If geometry-conditioned methods fail under whitening, the advantage was statisti
 - Whitening destroys all advantages → geometry was purely statistical
 - No improvement over baselines → geometry does not encode compressible structure
 - Improvements disappear at scale → method is dataset/architecture-specific artifact
+
+---
+
+## Results Summary
+
+### Experiment 1 — Variance-Weighted Pruning (VWP)
+
+**Setup**
+- Model: ResNet18
+- Dataset: CIFAR-10
+- Baseline: L1-norm structured pruning
+- Variant: Variance-Weighted Pruning (channels weighted by activation variance)
+- Budgets: 25%, 50%, 75% sparsity
+- Fine-tuning: 5 epochs post-pruning
+
+**Findings**
+- At moderate sparsity (25–50%), VWP performed similarly to L1 pruning.
+- At high sparsity (75%), VWP showed slightly better immediate accuracy retention and marginally improved recovery after fine-tuning.
+- The improvement was modest (<2%) and inconsistent across runs.
+
+**Whitening Diagnostic**
+- When activations were whitened prior to pruning, the performance difference between VWP and L1 collapsed.
+- This confirms that VWP exploits covariance anisotropy rather than invariant functional structure.
+
+**Conclusion**
+Variance encodes weak but real importance signals under aggressive pruning, but magnitude-based heuristics already capture most of this signal in ResNet-style architectures.
+
+---
+
+### Experiment 2 — Spectral-Adaptive LoRA
+
+**Setup**
+- Model: ResNet18
+- Task: Rotated CIFAR-10 (90° rotation) to induce adaptation pressure
+- Baseline: Uniform LoRA (r = 8)
+- Variant: Adaptive LoRA with rank allocated proportional to layer-wise effective rank
+- Constraint: Matched total parameter budget (±1%)
+
+**Findings**
+- Adaptive LoRA consistently underperformed uniform LoRA by ~1–2% accuracy.
+- Early layers received lower rank, late layers higher rank, matching measured effective rank.
+- Despite correct allocation behavior, performance degraded.
+
+**Interpretation**
+Stable rank reflects statistical dimensionality, not learning demand.
+Isotropic noise inflates effective rank and misleads allocation.
+Uniform LoRA appears robust to such noise, while geometry-conditioned allocation is brittle.
+
+**Conclusion**
+Effective-rank-based capacity allocation does not improve parameter-efficient fine-tuning in this setting.
+
+---
+
+## Falsification Outcomes
+
+The following hypotheses were falsified:
+
+- Geometry-conditioned methods do NOT consistently outperform magnitude-based or uniform baselines at matched budgets.
+- Effective rank does NOT reliably indicate where additional parameters should be allocated.
+- Advantages from geometry do NOT survive whitening, confirming they are statistical rather than functional.
+
+---
+
+## Overall Conclusion
+
+Activation-space geometry in deep networks primarily reflects variance structure, not executable pathways or compressible programs.
+
+While covariance carries weak signals relevant under extreme compression, it does not provide a reliable basis for structured pruning or adaptive parameter allocation beyond existing SOTA heuristics.
+
+This repository documents negative and modest results that clarify the limits of geometry-conditioned compression and helps narrow the space of viable future approaches.
+
+---
+
+## Latest Experimental Notebook
+
+The most recent experiment probing geometry-conditioned capacity allocation and transition-motif behavior is available as a standalone Colab notebook:
+
+- Geometry-Adaptive LoRA & N-gram Walker Probe  
+  https://colab.research.google.com/drive/1m9eArHugMXMcfcNYdwh4C-mLRl5pUFKQ?usp=sharing
+
+This notebook contains the full runnable code, diagnostics, and raw outputs for the final experiments discussed in this repository. Figures and derived summaries will be added separately.
+
+## Experiment 03 — N-gram Walker (Transition Motifs)
+
+![N-gram Frequency Distribution (Zipfian Analysis)](artifacts/figures/experiment_03_ngram_walker_zipf.png)
+
+*Zipf-style frequency distribution of transition n-grams under operative, passive, and shuffled (null) walk policies. This figure visualizes motif frequency structure; interpretation is discussed in the accompanying Colab.*
+
+---
 
 ## Repository Structure
 
