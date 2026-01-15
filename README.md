@@ -160,9 +160,113 @@ This notebook contains the full runnable code, diagnostics, and raw outputs for 
 
 ## Experiment 03 — N-gram Walker (Transition Motifs)
 
+### Objective
+To test whether activation-space geometry constrains **actual computational flow during inference**, rather than existing only as a statistical regularity exploitable for compression.
+
+Specifically, this experiment asks:
+
+> Does geometry shape how activations transition, or is it epiphenomenal?
+
+If geometry is **operative**, walks through activation space should exhibit:
+- Non-uniform transition motifs
+- Motif distributions distinct from null (shuffled) geometry
+- Reduced entropy and structured recurrence under biased policies
+
+If geometry is **epiphenomenal**, transition statistics should be indistinguishable from random diffusion.
+
+---
+
+### Method Summary
+- Activation space represented as a k-NN graph built from embeddings
+- Walkers traverse the graph under three policies:
+  1. **Operative (confidence-biased)**
+  2. **Passive (random)**
+  3. **Null (geometry shuffled, degree-matched)**
+- Each transition is tokenized into a discrete symbol encoding:
+  - Directional change (curvature proxy)
+  - Local density change (complexity proxy)
+  - Confidence change
+- N-grams (N=3) are extracted from token streams
+- Motif statistics analyzed via:
+  - Frequency distributions (Zipf plots)
+  - Entropy
+  - Jaccard overlap with null model
+
+The full runnable notebook is available here:
+https://colab.research.google.com/drive/1m9eArHugMXMcfcNYdwh4C-mLRl5pUFKQ?usp=sharing
+
+---
+
+### Results
+**Key empirical finding:**
+
+> Transition motif distributions under operative, passive, and null walks are statistically indistinguishable.
+
 ![N-gram Frequency Distribution (Zipfian Analysis)](artifacts/figures/experiment_03_ngram_walker_zipf.png)
 
 *Zipf-style frequency distribution of transition n-grams under operative, passive, and shuffled (null) walk policies. This figure visualizes motif frequency structure; interpretation is discussed in the accompanying Colab.*
+
+Observed properties:
+- Nearly identical Zipfian frequency curves across all conditions
+- High Jaccard overlap between operative and null n-gram sets
+- Comparable entropy and vocabulary size across policies
+- Dominance of generic motifs (e.g., neutral turns with flat confidence)
+
+No transition motifs emerged that:
+- Clustered by geometric region
+- Persisted across biased vs random walks
+- Differed meaningfully from shuffled-geometry baselines
+
+---
+
+### Interpretation
+This experiment provides **strong negative evidence** for the hypothesis that activation-space geometry acts as a **computational wiring diagram**.
+
+Results support the conclusion that:
+- Geometry does **not** constrain transition dynamics during inference
+- Walk behavior is consistent with near-Markovian diffusion
+- Apparent geometric structure does not induce persistent programs, paths, or motifs
+
+In short:
+
+> The network does not “walk the geometry” during computation.
+
+---
+
+### Implications
+This experiment cleanly separates two roles of geometry:
+
+| Role | Supported |
+|----|----|
+| Statistical structure useful for compression | Yes |
+| Operative constraint on inference dynamics | No |
+| Extractable symbolic programs | No |
+| Manifold-like execution paths | No |
+
+As a consequence:
+- Geometry can guide **heuristics** (e.g., pruning, allocation)
+- Geometry does **not** encode executable programs or flow logic
+- Distillation must operate at the level of **weight and activation transformations**, not path extraction
+
+---
+
+### Relation to Prior Experiments
+Experiment 03 complements earlier findings in this repository:
+
+- **Experiments 01–02:** Geometry exists, is variance-encoded, and can weakly inform compression
+- **Experiment 03:** Geometry does *not* constrain inference trajectories
+
+Together, these results establish geometry as:
+
+> **A descriptive statistical regularity, not an operative computational substrate**
+
+---
+
+### Status
+- Experiment complete
+- Null models validated
+- Operative-geometry hypothesis falsified
+- No further scaling required for the core claim
 
 ---
 
